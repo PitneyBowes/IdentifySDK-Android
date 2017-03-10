@@ -1,0 +1,16 @@
+com.pb.identify.OAuth
+com.pb.identify.common.model
+com.pb.identify.identifyAddress
+com.pb.identify.identifyAddress.common
+com.pb.identify.identifyAddress.validateMailingAddress.model
+com.pb.identify.identifyAddress.validateMailingAddressPremium.model
+com.pb.identify.identifyAddress.validateMailingAddressPro.model
+com.pb.identify.identifyEmail
+com.pb.identify.identifyEmail.validateEmailAddress.model
+com.pb.identify.identifyEntity
+com.pb.identify.identifyEntity.extractEntities.model
+com.pb.identify.identifyRisk
+com.pb.identify.identifyRisk.checkGlobalWatchList.model
+com.pb.identify.interfaces
+com.pb.identify.network
+com.pb.identify.utils
