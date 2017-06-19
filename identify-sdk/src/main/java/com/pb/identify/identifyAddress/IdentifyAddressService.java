@@ -21,6 +21,8 @@ import java.util.List;
 import com.pb.identify.identifyAddress.validateMailingAddress.model.ValidateMailingAddressAPIResponseList;
 import com.pb.identify.identifyAddress.validateMailingAddressPro.model.ValidateMailingAddressProAPIResponseList;
 import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.ValidateMailingAddressPremiumAPIResponseList;
+import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIResponseList;
+import com.pb.identify.identifyAddress.getPostalCodes.model.GetPostalCodesAPIResponseList;
 import com.pb.identify.interfaces.RequestObserver;
 
 public interface IdentifyAddressService {
@@ -58,5 +60,27 @@ public interface IdentifyAddressService {
 	 */
 	public void validateMailingAddressPremium(Context context, List<com.pb.identify.identifyAddress.validateMailingAddressPremium.model.Address> addresses, com.pb.identify.identifyAddress.validateMailingAddressPremium.model.Options options,
 										  RequestObserver<ValidateMailingAddressPremiumAPIResponseList> requestObserver);
+
+	/**
+	 * Return city and state/province for the input postal code records asynchronously for GetCityStateProvince
+	 *
+	 * @param context Activity context
+	 * @param records List of records to validate
+	 * @param options List of options
+	 * @param requestObserver request observer to delegate success, failure methods
+	 */
+	public void getCityStateProvince(Context context, List<com.pb.identify.identifyAddress.getCityStateProvince.model.Record> records, com.pb.identify.identifyAddress.getCityStateProvince.model.Options options,
+											  RequestObserver<GetCityStateProvinceAPIResponseList> requestObserver);
+
+	/**
+	 * Return postal codes for a given city and state/province asynchronously.
+	 *
+	 * @param records List of records to retrieve postal codes
+	 * @param options List of options
+	 * @param requestObserver Observer interface for request
+
+	 */
+	public void getPostalCodes(Context context, List<com.pb.identify.identifyAddress.getPostalCodes.model.Record> records, com.pb.identify.identifyAddress.getPostalCodes.model.Options options,
+									RequestObserver<GetPostalCodesAPIResponseList> requestObserver);
 
 }
