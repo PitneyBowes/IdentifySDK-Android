@@ -2,8 +2,6 @@ com.pb.identify.OAuth
 com.pb.identify.common.model
 com.pb.identify.identifyAddress
 com.pb.identify.identifyAddress.common
-com.pb.identify.identifyAddress.getCityStateProvince.model
-com.pb.identify.identifyAddress.getPostalCodes.model
 com.pb.identify.identifyAddress.validateMailingAddress.model
 com.pb.identify.identifyAddress.validateMailingAddressPremium.model
 com.pb.identify.identifyAddress.validateMailingAddressPro.model

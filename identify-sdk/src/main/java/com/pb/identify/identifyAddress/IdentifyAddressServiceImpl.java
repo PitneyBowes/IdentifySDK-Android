@@ -35,6 +35,8 @@ import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.Valid
 import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.ValidateMailingAddressPremiumAPIRequest;
 import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIResponseList;
 import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIRequest;
+import com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.ValidateMailingAddressUSCANAPIRequest;
+import com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.ValidateMailingAddressUSCANAPIResponseList;
 import com.pb.identify.interfaces.RequestObserver;
 import com.pb.identify.network.ErrorResponse;
 import com.pb.identify.network.IdentifyErrorResponse;
@@ -55,6 +57,7 @@ public class IdentifyAddressServiceImpl extends OAuthService implements Identify
 	private static final String validateMailingAddressPremiumURL = "/identifyaddress/v1/rest/validatemailingaddresspremium/results.json";
 	private static final String getCityStateProvinceURL = "/identifyaddress/v1/rest/getcitystateprovince/results.json";
 	private static final String getPostalCodesURL = "/identifyaddress/v1/rest/getpostalcodes/results.json";
+	private static final String validateMailingAddressUSCANURL = "/identifyaddress/v1/rest/validatemailingaddressuscan/results.json";
     @Override
     public void validateMailingAddress(final Context context, final List<com.pb.identify.identifyAddress.validateMailingAddress.model.Address> addresses, final com.pb.identify.identifyAddress.validateMailingAddress.model.Options options, final RequestObserver<ValidateMailingAddressAPIResponseList> requestObserver) {
 
@@ -611,6 +614,121 @@ public class IdentifyAddressServiceImpl extends OAuthService implements Identify
 			@Override
 			public void onFailure(ErrorResponse errorData) {
 				Log.e("Oops Retrieval of Get Postal Codes details failed");
+				requestObserver.onFailure(errorData);
+			}
+		});
+
+
+		_PostRestService.execute();
+
+	}
+
+	@Override
+	public void validateMailingAddressUSCAN(final Context context, final List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, final com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options,
+											final RequestObserver<ValidateMailingAddressUSCANAPIResponseList> requestObserver){
+
+		if(context == null || addresses == null || addresses.isEmpty())
+		{
+			_LOG.info("something is null");
+			IllegalArgumentException illegalArgumentException = new IllegalArgumentException(ERROR_MSG);
+
+			ErrorResponse errorResponse = new ErrorResponse(Utils.getInternalErrorResponseObject(illegalArgumentException.getMessage(), illegalArgumentException));
+			errorResponse.setRootErrorMessage(illegalArgumentException.getMessage());
+
+			IdentifyErrorResponse identifyErrorResponse = new IdentifyErrorResponse();
+			errorResponse.setIdentifyErrorResponse(identifyErrorResponse);
+
+			requestObserver.onFailure(errorResponse);
+			return;
+		}
+		super.getAuthenticationToken(context, new RequestObserver<AuthToken>() {
+
+			@Override
+			public void onSucess(AuthToken data) {
+
+				Log.d("Authentication is sucessfull, It's time to call Identify API ");
+				processValidateMailingAddressUSCANRequest(context,addresses,options,requestObserver);
+			}
+
+			@Override
+			public void onRequestStart() {
+				Log.d("Authentication request has been started for Identify ");
+
+			}
+
+			@Override
+			public void onFailure(ErrorResponse errorData) {
+				Log.e("Authentication request has been failed" + errorData);
+				requestObserver.onFailure(errorData);
+			}
+		});
+
+
+	}
+
+	private void processValidateMailingAddressUSCANRequest(Context context, List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, final com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options, final RequestObserver<ValidateMailingAddressUSCANAPIResponseList> requestObserver) {
+
+		urlMaker = UrlMaker.getInstance();
+
+		StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(validateMailingAddressUSCANURL));
+
+		Log.d("URL : "+urlBuilder);
+
+		ValidateMailingAddressUSCANAPIRequest request = new ValidateMailingAddressUSCANAPIRequest();
+		request.getInputAddressUSCAN().getAddresses().addAll(addresses);
+		request.setOptions(options);
+
+		Gson gson = new Gson();
+
+		JSONObject jsonObject = null;
+
+		try
+		{
+			String json = gson.toJson(request);
+			Log.d("gson validate mailing address uscan request : "+json);
+			jsonObject = new JSONObject(json);
+		}
+		catch (JSONException e1)
+		{
+			Log.e("Excpetion in Json parsing of validate mailing address uscan request : "+ e1.getMessage());
+		}
+		_PostRestService = new PostRestService(context, urlBuilder.toString(), jsonObject, this, new RequestObserver<String>() {
+
+			@Override
+			public void onSucess(String data) {
+
+				ValidateMailingAddressUSCANAPIResponseList response = null;
+				try {
+					JSONObject jsonResponse = new JSONObject(data);
+					Gson gson = new Gson();
+					response = gson.fromJson(jsonResponse.toString(),
+							ValidateMailingAddressUSCANAPIResponseList.class);
+
+					Log.d("Got the validate mailing address uscan response " + response);
+
+				} catch (JSONException e) {
+					Log.e("Excpetion in Json parsing of validate mailing address uscan reponse : "
+							+ e.getMessage());
+					ErrorResponse errorResponse = new ErrorResponse(
+							Utils.getInternalErrorResponseObject(
+									e.getMessage(), e));
+					errorResponse.setRootErrorMessage(e.getMessage());
+
+					requestObserver.onFailure(errorResponse);
+					return;
+				}
+				requestObserver.onSucess(response);
+			}
+
+			@Override
+			public void onRequestStart() {
+				Log.d("Validate Mailing Address USCAN request has been started");
+				requestObserver.onRequestStart();
+			}
+
+			@Override
+			public void onFailure(ErrorResponse errorData) {
+				Log.e("Oops Retrieval of Validate Mailing Address USCAN Details failed");
 				requestObserver.onFailure(errorData);
 			}
 		});

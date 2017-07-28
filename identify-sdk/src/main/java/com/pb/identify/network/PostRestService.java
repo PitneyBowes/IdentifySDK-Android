@@ -63,6 +63,7 @@ public class PostRestService extends RestService {
                         header.put("Accept", "application/json");
                         if(service.isTokenAvailable()){
                         	header.put("Authorization",service.getToken().toString());
+							header.put("User-Agent", "Android-SDK");
                         }
                         return header;
                     }

@@ -23,6 +23,7 @@ import com.pb.identify.identifyAddress.validateMailingAddressPro.model.ValidateM
 import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.ValidateMailingAddressPremiumAPIResponseList;
 import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIResponseList;
 import com.pb.identify.identifyAddress.getPostalCodes.model.GetPostalCodesAPIResponseList;
+import com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.ValidateMailingAddressUSCANAPIResponseList;
 import com.pb.identify.interfaces.RequestObserver;
 
 public interface IdentifyAddressService {
@@ -82,5 +83,16 @@ public interface IdentifyAddressService {
 	 */
 	public void getPostalCodes(Context context, List<com.pb.identify.identifyAddress.getPostalCodes.model.Record> records, com.pb.identify.identifyAddress.getPostalCodes.model.Options options,
 									RequestObserver<GetPostalCodesAPIResponseList> requestObserver);
+
+	/**
+	 * Validate and format the batch of input addresses and fills the missing details asynchronously for ValidateMailingAddressUSCAN
+	 *
+	 * @param context Activity context
+	 * @param addresses List of addresses to validate
+	 * @param options List of options
+	 * @param requestObserver request observer to delegate success, failure methods
+	 */
+	public void validateMailingAddressUSCAN(Context context, List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options,
+							   RequestObserver<ValidateMailingAddressUSCANAPIResponseList> requestObserver);
 
 }
