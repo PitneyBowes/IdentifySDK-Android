@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String API_KEY = "5OCEPAg1OlVm2BGYAjPeKAdv67bG11sG";
-                final String SECRET = "2NJbpnG87nVR7AWF";
+                final String API_KEY = "API_KEY";
+                final String SECRET = "Secret";
                 IdentifyServiceManager identifyServiceManager = IdentifyServiceManager.getInstance(context,API_KEY,SECRET);
 
                 Address address2 = new Address();
